@@ -4,30 +4,28 @@ import { Button, Overlay } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Toast from 'react-native-easy-toast';
 
+import { firebaseApp } from "../utills/firebase";
+import firebase from "firebase/app";
+import  "firebase/firestore";
+
+var db = firebase.firestore(firebaseApp);
+
 
 
 
 export default function AddTask(props) {
-    const {tareas, setTareas}= props.route.params;
     const {navigation}= props;
-
     const toastRef = useRef();
 
+    const [tarea, setTarea] = useState(defaultFormValue());
     const [date, setDate] = useState(defaultDateValue());
     const [visible, setVisible] = useState(false);
 
-
-
-    const [tarea, setTarea] = useState(defaultFormValue());
-
-
     const toggleOverlay = () => {
       setTarea({ ...tarea, ["fecha"]: date});
-      console.log(tarea.fecha);
       setVisible(!visible);
     };
     
-
 
     const onChangeForm = (e, type) => {
         setTarea({ ...tarea, [type]: e.nativeEvent.text });
@@ -42,7 +40,10 @@ export default function AddTask(props) {
         if(tarea.nombre === ""){
             toastRef.current.show("Recuerda llenar todo los espacios (Nombre, fecha)")
         }else{
-            setTareas(tarea);
+            console.log(tarea.nombre, tarea.fecha, tarea. nota);
+            db.collection("sends").doc().set({
+              tarea
+            })
             toastRef.current.show("Tarea agregada");
             
             setTimeout(() => {

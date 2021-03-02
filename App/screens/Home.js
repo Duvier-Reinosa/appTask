@@ -8,7 +8,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 export default function Home(props) {
    const {navigation} = props;
    const [tareas, setTareas] = useState([]);
-   console.log(tareas);
+   // console.log(tareas);
 
    
     return (<View style={styles.homeScreen}>

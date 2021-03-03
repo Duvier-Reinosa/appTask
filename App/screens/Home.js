@@ -1,22 +1,24 @@
-import React, {useEffect, useState} from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import React, {useEffect, useState, useCallback} from 'react';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import { Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 
-export default function Home(props) {
-   const {navigation} = props;
-   const [tareas, setTareas] = useState();
-   console.log(tareas);
+import { firebaseApp } from "../utills/firebase";
+import firebase from "firebase/app";
+import  "firebase/firestore";
 
-   
+const db = firebase.firestore(firebaseApp);
+
+
+export default function Home(props) {
+
+   const [tareas, setTareas] = useState([]);
+
+
     return (<View style={styles.homeScreen}>
        <ScrollView>
-          {
-             
-          }
-        
+            
        </ScrollView>
             
             <Button
@@ -33,6 +35,12 @@ export default function Home(props) {
             />
          </View>)
       }
+      function Tasks() {
+
+      }
+
+    
+     
 
 const styles = StyleSheet.create({
    homeScreen:{

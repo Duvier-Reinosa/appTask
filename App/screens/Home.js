@@ -1,7 +1,8 @@
 import React, {useEffect, useState, useCallback} from 'react';
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, FlatList } from 'react-native';
 import { Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {useFocusEffect, useIsFocused} from "@react-navigation/native";
 
 
 import { firebaseApp } from "../utills/firebase";
@@ -12,12 +13,31 @@ const db = firebase.firestore(firebaseApp);
 
 
 export default function Home(props) {
+   const {navigation} = props;
 
    const [tareas, setTareas] = useState([]);
 
+   useFocusEffect(
+      useCallback(()=>{
+         const resultTasks = [];
+         db.collection("tasks").get().then((snap)=>{
+         snap.forEach((doc)=>{
+         resultTasks.push(doc.data())
+         })
+         setTareas(resultTasks);
+      });
 
+      }, [])
+   );
+
+    
     return (<View style={styles.homeScreen}>
        <ScrollView>
+          {(tareas.length > 0) ? <FlatList
+                  data={tareas}
+                  renderItem={(task)=> <Task task={task} />}
+                  keyExtractor={(item, index) => index.toString}
+               /> : <Text>cargado...</Text>}
             
        </ScrollView>
             
@@ -35,8 +55,26 @@ export default function Home(props) {
             />
          </View>)
       }
-      function Tasks() {
 
+      function Task(props) {
+         const {task } = props;
+         const theTask = task.item.tarea;
+         console.log(theTask);
+         return(
+            <View style={styles.tasksContainer} >
+               <View style={styles.taskContainer}>
+
+                  <Text style={styles.taskName}> 
+                     {theTask.nombre}
+                     </Text>
+                  <Text style={styles.taskDate}>{theTask.fecha.dia}/{theTask.fecha.mes}/{theTask.fecha.año}</Text>
+                  <Text style={styles.taskNote}>{theTask.nota}</Text>
+
+               </View>
+            </View>
+            
+         )
+         
       }
 
     

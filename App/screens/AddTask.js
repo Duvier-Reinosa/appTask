@@ -41,7 +41,7 @@ export default function AddTask(props) {
             toastRef.current.show("Recuerda llenar todo los espacios (Nombre, fecha)")
         }else{
             console.log(tarea.nombre, tarea.fecha, tarea. nota);
-            db.collection("sends").doc().set({
+            db.collection("tasks").doc().set({
               tarea
             })
             toastRef.current.show("Tarea agregada");

@@ -5,10 +5,12 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Toast from 'react-native-easy-toast';
 
 import { firebaseApp } from "../utills/firebase";
-import firebase from "firebase/app";
-import  "firebase/firestore";
+import firebase from 'firebase/app';
+import 'firebase/firestore';
 
 var db = firebase.firestore(firebaseApp);
+
+
 
 
 
@@ -16,6 +18,18 @@ var db = firebase.firestore(firebaseApp);
 export default function AddTask(props) {
     const {navigation}= props;
     const toastRef = useRef();
+
+    let user = firebase.auth().currentUser;
+    let name, email, photoUrl, uid, emailVerified;
+
+    if (user != null) {
+          name = user.displayName;
+          email = user.email;
+          photoUrl = user.photoURL;
+          emailVerified = user.emailVerified;
+          uid = user.uid;
+    }
+
 
     const [tarea, setTarea] = useState(defaultFormValue());
     const [date, setDate] = useState(defaultDateValue());
@@ -41,7 +55,7 @@ export default function AddTask(props) {
             toastRef.current.show("Recuerda llenar todo los espacios (Nombre, fecha)")
         }else{
             console.log(tarea.nombre, tarea.fecha, tarea. nota);
-            db.collection("tasks").doc().set({
+            db.collection(`tasks${uid}`).doc().set({
               tarea
             })
             toastRef.current.show("Tarea agregada");
@@ -64,11 +78,13 @@ export default function AddTask(props) {
                   <TextInput
                     style={styles.inputOverlay}
                     onChange={(e)=> onChangeFormOverlay(e, "dia")}
+                    defaultValue={date.dia}
                   />
                   <Text style={styles.text}>Mes</Text>
                   <TextInput
                     style={styles.inputOverlay}
                     onChange={(e)=> onChangeFormOverlay(e, "mes")}
+                    defaultValue={date.mes}
                   
                   />
                   <Text style={styles.text}>año</Text>

@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Text} from "react-native";
 import * as firebase from "firebase";
 
+
 import Loading from "./App/components/Loading";
 
 import HomeStack from "./App/navigation/HomeStack";
@@ -9,7 +10,12 @@ import AcountStack from "./App/navigation/AcountStack";
 
 
 
+
+
 export default function App() {
+
+  
+
   const [login, setLogin] = useState(null);
 
   useEffect(() =>{
